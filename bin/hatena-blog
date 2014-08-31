@@ -1,0 +1,112 @@
+#!/usr/bin/env node
+
+var commander = require('commander-b');
+var blog = require('hatena-blog-api');
+var path = require('path');
+var fs = require('fs');
+
+var newClient = function() {
+  return blog({
+    type: 'wsse',
+    username: process.env.HATENA_USERNAME,
+    blogId: process.env.HATENA_BLOG_ID,
+    apikey: (
+      process.env.HATENA_API_KEY
+      ? process.env.HATENA_API_KEY
+      : (
+        process.env.HATENA_APIKEY
+        ? process.env.HATENA_APIKEY
+        : null))
+  });
+};
+
+var getVersion = function() {
+  var packageJsonPath = path.resolve(__dirname, './../package.json');
+  var packageJson = require(packageJsonPath);
+  return packageJson.version
+};
+
+var formatEntry = function(e) {
+  var title = e.title[0];
+  var url = e.link.filter(function(l) {
+    return l.$.rel === 'alternate';
+  })[0].$.href;
+  return ['title: ' + title, 'url: ' + url].join('\n')
+};
+
+var command = commander()
+var program = command.version(getVersion());
+
+program
+.command('create <file>', 'create an entry')
+.option('-t, --title <title>', 'title')
+.action(function(file, options) {
+  var client = newClient();
+  var params = { content: fs.readFileSync(file, { encoding: 'utf8' }) };
+  if (options.title) {
+    params.title = options.title;
+  }
+  return client.create(params).then(function(res) {
+    console.log('title: ' + res.entry.title._);
+    console.log('url: ' + res.entry.link[1].$.href); // link[rel="alternate"]
+  }, function(err) {
+    console.error(err);
+  });
+});
+
+// TODO
+//
+// program
+// .command('list', 'list uploaded photos')
+// .action(function() {
+//   var client = newClient();
+//   return client.index().then(function(res) {
+//     console.log(res.feed.entry.map(formatEntry).join('\n'));
+//   }, function(err) {
+//     reject(err);
+//   });
+// });
+//
+// program
+// .command('update <id>', 'view a photo info')
+// .option('-t, --title <title>', 'title')
+// .action(function(id, options) {
+//   if (!options.title) {
+//     var msg = 'title is required';
+//     console.error(msg);
+//     return reject(new Error(msg));
+//   }
+//   var client = newClient();
+//   return client.update({
+//     id: id,
+//     title: options.title
+//   }).then(null, function(err) {
+//     console.error(err);
+//   });
+// });
+//
+// program
+// .command('info <id>', 'view a photo info')
+// .action(function(id) {
+//   var client = newClient();
+//   return client.show({
+//     id: id
+//   }).then(function(res) {
+//     console.log(formatEntry(res.entry));
+//   }, function(err) {
+//     console.error(err);
+//   });
+// });
+//
+// program
+// .command('delete <id>', 'delete a photo')
+// .action(function(id) {
+//   var client = newClient();
+//   return client.destroy({
+//     id: id
+//   }).then(null, function(err) {
+//     console.error(err);
+//   });
+// });
+
+program.execute();
