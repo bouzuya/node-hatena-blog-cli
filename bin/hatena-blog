@@ -63,23 +63,19 @@ program
     console.error(err);
   });
 });
+
+program
+.command('index', 'index entries')
+.action(function() {
+  var client = newClient();
+  return client.index().then(function(res) {
+    console.log(res.feed.entry.map(formatEntry).join('\n'));
   }, function(err) {
     console.error(err);
   });
 });
 
 // TODO
-//
-// program
-// .command('list', 'list uploaded photos')
-// .action(function() {
-//   var client = newClient();
-//   return client.index().then(function(res) {
-//     console.log(res.feed.entry.map(formatEntry).join('\n'));
-//   }, function(err) {
-//     reject(err);
-//   });
-// });
 //
 // program
 // .command('update <id>', 'view a photo info')
