@@ -30,6 +30,7 @@
   "homepage": "https://github.com/bouzuya/node-hatena-blog-cli",
   "dependencies": {
     "commander-b": "^0.2.1",
-    "hatena-blog-api": "^0.1.1"
+    "hatena-blog-api": "^0.1.1",
+    "js-yaml": "^3.2.1"
   }
 }

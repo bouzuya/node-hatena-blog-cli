@@ -40,11 +40,24 @@ var program = command.version(getVersion());
 program
 .command('create <file>', 'create an entry')
 .option('-t, --title <title>', 'title')
+.option('-j, --jekyll', 'jekyll markdown')
 .action(function(file, options) {
   var client = newClient();
   var params = { content: fs.readFileSync(file, { encoding: 'utf8' }) };
   if (options.title) {
     params.title = options.title;
+  }
+  if (options.jekyll) {
+    var yaml = require('js-yaml');
+    var pattern = /^---$\n*([\s\S]*?)\n*^---$\n*([\s\S]*)/m;
+    var match = params.content.match(pattern);
+    var headerString = match[1];
+    var header = yaml.safeLoad(headerString);
+    var content = match[2];
+    if (header.title) {
+      params.title = header.title;
+    }
+    params.content = match[2];
   }
   return client.create(params).then(function(res) {
     console.log('title: ' + res.entry.title._);
