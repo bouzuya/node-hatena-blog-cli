@@ -10,13 +10,7 @@ var newClient = function() {
     type: 'wsse',
     username: process.env.HATENA_USERNAME,
     blogId: process.env.HATENA_BLOG_ID,
-    apikey: (
-      process.env.HATENA_API_KEY
-      ? process.env.HATENA_API_KEY
-      : (
-        process.env.HATENA_APIKEY
-        ? process.env.HATENA_APIKEY
-        : null))
+    apiKey: process.env.HATENA_API_KEY || process.env.HATENA_APIKEY
   });
 };
 
