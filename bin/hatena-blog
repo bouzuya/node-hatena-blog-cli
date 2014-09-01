@@ -57,6 +57,10 @@ program
     if (header.title) {
       params.title = header.title;
     }
+    // bouzuya's markdown
+    if (header.pubdate || header.updated) {
+      params.updated = header.pubdate || header.updated;
+    }
     params.content = match[2];
   }
   return client.create(params).then(function(res) {
