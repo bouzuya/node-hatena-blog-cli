@@ -53,15 +53,15 @@ program
   if (options.jekyll) {
     var parsed = parseJekyllMarkdown(params.content);
     params.content = parsed.content;
-    if (parsed.headers.title) params.title = header.title;
+    if (parsed.headers.title) params.title = parsed.headers.title;
     // bouzuya's markdown
     if (parsed.headers.pubdate || parsed.headers.updated)
-      params.updated = parsed.header.pubdate || parsed.header.updated;
+      params.updated = parsed.headers.pubdate || parsed.headers.updated;
   }
   if (options.draft) params.draft = true;
   if (options.title) params.title = options.title;
   return client.create(params).then(function(res) {
-    console.log(formatEntry(res));
+    console.log(formatEntry(res.entry));
   }, function(err) {
     console.error(err);
   });
