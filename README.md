@@ -16,8 +16,8 @@
     $ export HATENA_BLOG_ID='blog id'
     $ export HATENA_API_KEY='api key'
 
-    $ # upload a photo
-    $ hatena-blog upload --title 'special bouzuya entry' bouzuya.md
+    $ # create an entry
+    $ hatena-blog create --title 'special bouzuya entry' bouzuya.md
     title: special bouzuya entry
     url: http://bouzuya.hatenablog.com/entry/2014/08/31/202340
 
