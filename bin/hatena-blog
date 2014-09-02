@@ -44,8 +44,8 @@ var program = command.version(getVersion());
 
 program
 .command('create <file>', 'create an entry')
-.option('-d, --draft', 'draft')
 .option('-t, --title <title>', 'title')
+.option('-d, --draft', 'draft')
 .option('-j, --jekyll', 'jekyll markdown')
 .action(function(file, options) {
   var client = newClient();
