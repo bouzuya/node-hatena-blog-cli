@@ -21,11 +21,12 @@ var getVersion = function() {
 };
 
 var formatEntry = function(e) {
+  var id = e.id._.match(/^tag:[^:]+:[^-]+-[^-]+-\d+-(\d+)$/)[1];
   var title = e.title._;
   var url = e.link.filter(function(l) {
     return l.$.rel === 'alternate';
   })[0].$.href;
-  return ['title: ' + title, 'url: ' + url].join('\n')
+  return ['id: ' + id, 'title: ' + title, 'url: ' + url].join('\n')
 };
 
 var command = commander()
