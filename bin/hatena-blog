@@ -90,25 +90,32 @@ program
 });
 
 
+program
+.command('update <id> <file>', 'update an entry')
+.option('-t, --title <title>', 'title')
+.option('-d, --draft', 'draft')
+.option('-j, --jekyll', 'jekyll markdown')
+.action(function(id, file, options) {
+  var params = { id: id, content: fs.readFileSync(file, { encoding: 'utf8' }) };
+  if (options.jekyll) {
+    var parsed = parseJekyllMarkdown(params.content);
+    params.content = parsed.content;
+    if (parsed.headers.title) params.title = parsed.headers.title;
+    // bouzuya's markdown
+    if (parsed.headers.pubdate || parsed.headers.updated)
+      params.updated = parsed.headers.pubdate || parsed.headers.updated;
+  }
+  if (options.title) params.title = options.title;
+  if (options.draft) params.draft = true;
+  var client = newClient();
+  return client.update(params).then(function(res) {
+    console.log(formatEntry(res.entry));
+  }, function(err) {
+    console.error(err);
+  });
+});
+
 // TODO
-//
-// program
-// .command('update <id>', 'view a photo info')
-// .option('-t, --title <title>', 'title')
-// .action(function(id, options) {
-//   if (!options.title) {
-//     var msg = 'title is required';
-//     console.error(msg);
-//     return reject(new Error(msg));
-//   }
-//   var client = newClient();
-//   return client.update({
-//     id: id,
-//     title: options.title
-//   }).then(null, function(err) {
-//     console.error(err);
-//   });
-// });
 //
 // program
 // .command('delete <id>', 'delete a photo')
