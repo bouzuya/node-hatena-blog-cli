@@ -29,6 +29,16 @@ var formatEntry = function(e) {
   return ['id: ' + id, 'title: ' + title, 'url: ' + url].join('\n')
 };
 
+var parseJekyllMarkdown = function(content) {
+  var yaml = require('js-yaml');
+  var pattern = /^---$\n*([\s\S]*?)\n*^---$\n*([\s\S]*)/m;
+  var match = content.match(pattern);
+  var headerString = match[1];
+  var headers = yaml.safeLoad(headerString);
+  var content = match[2];
+  return { headers: headers, content: content };
+};
+
 var command = commander()
 var program = command.version(getVersion());
 
@@ -41,20 +51,12 @@ program
   var client = newClient();
   var params = { content: fs.readFileSync(file, { encoding: 'utf8' }) };
   if (options.jekyll) {
-    var yaml = require('js-yaml');
-    var pattern = /^---$\n*([\s\S]*?)\n*^---$\n*([\s\S]*)/m;
-    var match = params.content.match(pattern);
-    var headerString = match[1];
-    var header = yaml.safeLoad(headerString);
-    var content = match[2];
-    if (header.title) {
-      params.title = header.title;
-    }
+    var parsed = parseJekyllMarkdown(params.content);
+    params.content = parsed.content;
+    if (parsed.headers.title) params.title = header.title;
     // bouzuya's markdown
-    if (header.pubdate || header.updated) {
-      params.updated = header.pubdate || header.updated;
-    }
-    params.content = match[2];
+    if (parsed.headers.pubdate || parsed.headers.updated)
+      params.updated = parsed.header.pubdate || parsed.header.updated;
   }
   if (options.draft) params.draft = true;
   if (options.title) params.title = options.title;
