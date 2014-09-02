@@ -40,9 +40,6 @@ program
 .action(function(file, options) {
   var client = newClient();
   var params = { content: fs.readFileSync(file, { encoding: 'utf8' }) };
-  if (options.draft) params.draft = true;
-  if (options.title) params.title = options.title;
-
   if (options.jekyll) {
     var yaml = require('js-yaml');
     var pattern = /^---$\n*([\s\S]*?)\n*^---$\n*([\s\S]*)/m;
@@ -59,6 +56,8 @@ program
     }
     params.content = match[2];
   }
+  if (options.draft) params.draft = true;
+  if (options.title) params.title = options.title;
   return client.create(params).then(function(res) {
     console.log(formatEntry(res));
   }, function(err) {
