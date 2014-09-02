@@ -76,6 +76,18 @@ program
   });
 });
 
+program
+.command('show <id>', 'show an entry')
+.action(function(id) {
+  var client = newClient();
+  return client.show({ id: id }).then(function(res) {
+    console.log(formatEntry(res.entry));
+  }, function(err) {
+    console.error(err);
+  });
+});
+
+
 // TODO
 //
 // program
@@ -92,19 +104,6 @@ program
 //     id: id,
 //     title: options.title
 //   }).then(null, function(err) {
-//     console.error(err);
-//   });
-// });
-//
-// program
-// .command('info <id>', 'view a photo info')
-// .action(function(id) {
-//   var client = newClient();
-//   return client.show({
-//     id: id
-//   }).then(function(res) {
-//     console.log(formatEntry(res.entry));
-//   }, function(err) {
 //     console.error(err);
 //   });
 // });
