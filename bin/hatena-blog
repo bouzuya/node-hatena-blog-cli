@@ -115,17 +115,15 @@ program
   });
 });
 
-// TODO
-//
-// program
-// .command('delete <id>', 'delete a photo')
-// .action(function(id) {
-//   var client = newClient();
-//   return client.destroy({
-//     id: id
-//   }).then(null, function(err) {
-//     console.error(err);
-//   });
-// });
+program
+.command('destroy <id>', 'destroy an entry')
+.action(function(id) {
+  var client = newClient();
+  return client.destroy({ id: id }).then(function(res) {
+    console.log('deleted');
+  }, function(err) {
+    console.error(err);
+  });
+});
 
 program.execute();
