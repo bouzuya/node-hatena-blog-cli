@@ -43,6 +43,17 @@ var command = commander()
 var program = command.version(getVersion());
 
 program
+.command('index', 'index entries')
+.action(function() {
+  var client = newClient();
+  return client.index().then(function(res) {
+    console.log(res.feed.entry.map(formatEntry).join('\n'));
+  }, function(err) {
+    console.error(err);
+  });
+});
+
+program
 .command('create <file>', 'create an entry')
 .option('-t, --title <title>', 'title')
 .option('-d, --draft', 'draft')
@@ -62,17 +73,6 @@ program
   if (options.title) params.title = options.title;
   return client.create(params).then(function(res) {
     console.log(formatEntry(res.entry));
-  }, function(err) {
-    console.error(err);
-  });
-});
-
-program
-.command('index', 'index entries')
-.action(function() {
-  var client = newClient();
-  return client.index().then(function(res) {
-    console.log(res.feed.entry.map(formatEntry).join('\n'));
   }, function(err) {
     console.error(err);
   });
