@@ -1,36 +1,36 @@
 {
   "name": "hatena-blog-cli",
-  "version": "0.3.0",
   "description": "Hatena::Blog command line interface (unofficial)",
-  "scripts": {
-    "test": "exit 0"
-  },
-  "bin": {
-    "hatena-blog": "./bin/hatena-blog"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/bouzuya/node-hatena-blog-cli.git"
-  },
-  "keywords": [
-    "hatena",
-    "hatena-blog",
-    "command",
-    "cli"
-  ],
+  "version": "0.3.0",
   "author": {
     "name": "bouzuya",
     "mail": "m@bouzuya.net",
     "url": "http://bouzuya.net"
   },
-  "license": "MIT",
+  "bin": {
+    "hatena-blog": "./bin/hatena-blog"
+  },
   "bugs": {
     "url": "https://github.com/bouzuya/node-hatena-blog-cli/issues"
   },
-  "homepage": "https://github.com/bouzuya/node-hatena-blog-cli",
   "dependencies": {
     "commander-b": "^0.2.1",
     "hatena-blog-api": "^0.2.0",
     "js-yaml": "^3.2.1"
+  },
+  "homepage": "https://github.com/bouzuya/node-hatena-blog-cli",
+  "keywords": [
+    "cli",
+    "command",
+    "hatena",
+    "hatena-blog"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bouzuya/node-hatena-blog-cli.git"
+  },
+  "scripts": {
+    "test": "exit 0"
   }
 }
