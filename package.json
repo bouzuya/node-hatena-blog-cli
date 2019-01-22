@@ -18,6 +18,9 @@
     "hatena-blog-api": "^0.2.0",
     "js-yaml": "^3.2.1"
   },
+  "files": [
+    "bin"
+  ],
   "homepage": "https://github.com/bouzuya/node-hatena-blog-cli",
   "keywords": [
     "cli",
