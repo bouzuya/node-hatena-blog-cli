@@ -27,7 +27,7 @@
 
 ## Author
 
-[bouzuya][user] &lt;[m@bouzuya.net][mail]&gt; ([http://bouzuya.net][url])
+[bouzuya][user] &lt;[m@bouzuya.net][email]&gt; ([https://bouzuya.net/][url])
 
 ## Badges
 
@@ -40,5 +40,5 @@
 [david-dm]: https://david-dm.org/bouzuya/node-hatena-blog-cli
 [david-dm-badge]: https://david-dm.org/bouzuya/node-hatena-blog-cli.png
 [user]: https://github.com/bouzuya
-[mail]: mailto:m@bouzuya.net
-[url]: http://bouzuya.net
+[email]: mailto:m@bouzuya.net
+[url]: https://bouzuya.net/

@@ -3,9 +3,9 @@
   "description": "Hatena::Blog command line interface (unofficial)",
   "version": "0.3.0",
   "author": {
+    "email": "m@bouzuya.net",
     "name": "bouzuya",
-    "mail": "m@bouzuya.net",
-    "url": "http://bouzuya.net"
+    "url": "https://bouzuya.net/"
   },
   "bin": {
     "hatena-blog": "./bin/hatena-blog"
