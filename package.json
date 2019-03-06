@@ -7,21 +7,22 @@
     "name": "bouzuya",
     "url": "https://bouzuya.net/"
   },
-  "bin": {
-    "hatena-blog": "./bin/hatena-blog"
-  },
+  "bin": "bin/hatena-blog",
   "bugs": {
     "url": "https://github.com/bouzuya/node-hatena-blog-cli/issues"
   },
   "dependencies": {
-    "commander-b": "^0.2.1",
-    "hatena-blog-api": "^0.2.0",
-    "js-yaml": "^3.2.1"
+    "hatena-blog-api": "^1.0.0"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "purescript": "^0.12.3",
+    "spago": "^0.7.0"
   },
   "files": [
     "bin"
   ],
-  "homepage": "https://github.com/bouzuya/node-hatena-blog-cli",
+  "homepage": "https://github.com/bouzuya/node-hatena-blog-cli#readme",
   "keywords": [
     "cli",
     "command",
@@ -29,11 +30,19 @@
     "hatena-blog"
   ],
   "license": "MIT",
+  "main": "index.js",
   "repository": {
-    "type": "git",
-    "url": "git://github.com/bouzuya/node-hatena-blog-cli.git"
+    "url": "git+https://github.com/bouzuya/node-hatena-blog-cli.git",
+    "type": "git"
   },
   "scripts": {
-    "test": "exit 0"
+    "build": "spago build",
+    "bundle": "spago make-module",
+    "docs": "spago sources | xargs purs docs --format html 'src/**/*.purs'",
+    "prepare": "npm-run-all -s build bundle",
+    "purs": "purs",
+    "repl": "spago repl",
+    "spago": "spago",
+    "test": "spago test"
   }
 }
