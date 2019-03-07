@@ -6,6 +6,7 @@ You can edit this file as you like.
     "hatena-blog-cli"
 , dependencies =
     [ "aff-promise"
+    , "bouzuya-command-line-option-parser"
     , "console"
     , "effect"
     , "node-process"
