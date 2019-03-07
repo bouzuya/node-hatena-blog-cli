@@ -30,7 +30,7 @@ exports.edit = function (memberUrl) {
   };
 };
 
-exports.list = function (client) {
+exports.listImpl = function (client) {
   return function () {
     return client.list();
   };
