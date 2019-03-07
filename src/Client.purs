@@ -3,6 +3,7 @@ module Client
   , Entry
   , list
   , newClient
+  , show
   ) where
 
 import Prelude
@@ -26,7 +27,7 @@ foreign import delete :: String -> Client -> Effect (Promise Response)
 foreign import edit ::
   forall r. String -> { | r } -> Client -> Effect (Promise Response)
 foreign import listImpl :: Client -> Effect (Promise (Array Entry))
-foreign import retrieve :: String -> Client -> Effect (Promise Response)
+foreign import retrieve :: String -> Client -> Effect (Promise Entry)
 
 type Entry =
   { authorName :: String
@@ -46,3 +47,6 @@ type Entry =
 
 list :: Client -> Aff (Array Entry)
 list = Promise.toAffE <<< listImpl
+
+show :: String -> Client -> Aff Entry
+show editUrl client = Promise.toAffE (retrieve editUrl client)

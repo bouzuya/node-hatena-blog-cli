@@ -13,6 +13,7 @@ import Data.Maybe (Maybe)
 import Data.Maybe as Maybe
 import Effect (Effect)
 import Effect.Aff as Aff
+import Effect.Class (liftEffect)
 import Effect.Class.Console as Console
 import Effect.Exception as Exception
 import Foreign.Object as Object
@@ -57,5 +58,14 @@ main = do
     "index" -> Aff.launchAff_ do
       response <- Client.list client
       Console.log (Array.intercalate "\n" (map formatEntry response))
+    "show" -> Aff.launchAff_ do
+      let commandArgs = Array.drop 1 arguments
+      editUrl <-
+        Maybe.maybe
+          (liftEffect (Exception.throw "no edit url"))
+          pure
+          (Array.index commandArgs 0)
+      response <- Client.show editUrl client
+      Console.log (formatEntry response)
     _ -> -- TODO
       Console.log command
