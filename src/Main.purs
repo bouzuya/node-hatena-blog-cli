@@ -86,6 +86,9 @@ main = do
   case command of
     "index" -> Aff.launchAff_ do
       response <- Promise.toAffE (list client)
-      Console.logShow response -- TODO: format
+      Console.log
+        (Array.intercalate
+          "\n"
+          (map (\{ published, title } -> published <> " " <> title) response))
     _ -> -- TODO
       Console.log command
