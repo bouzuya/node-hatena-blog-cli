@@ -7,13 +7,15 @@ import Prelude
 import Bouzuya.CommandLineOption as CommandLineOption
 import Client (Entry)
 import Client as Client
+import Command.Destroy as CommandDestroy
+import Command.Index as CommandIndex
+import Command.Show as CommandShow
 import Data.Array as Array
 import Data.Either as Either
 import Data.Maybe (Maybe)
 import Data.Maybe as Maybe
 import Effect (Effect)
 import Effect.Aff as Aff
-import Effect.Class (liftEffect)
 import Effect.Class.Console as Console
 import Effect.Exception as Exception
 import Foreign.Object as Object
@@ -48,33 +50,16 @@ main = do
     Either.either
       (const (Exception.throw "invalid option"))
       pure
-      (CommandLineOption.parse {} args)
+      (CommandLineOption.parse {} args) -- TODO: global options
   command <-
     Maybe.maybe
       (Exception.throw "no command")
       pure
       (Array.index arguments 0)
+  let commandArgs = Array.drop 1 arguments
   case command of
-    "index" -> Aff.launchAff_ do
-      response <- Client.list client
-      Console.log (Array.intercalate "\n" (map formatEntry response))
-    "show" -> Aff.launchAff_ do
-      let commandArgs = Array.drop 1 arguments
-      editUrl <-
-        Maybe.maybe
-          (liftEffect (Exception.throw "no edit url"))
-          pure
-          (Array.index commandArgs 0)
-      response <- Client.show editUrl client
-      Console.log (formatEntry response)
-    "destroy" -> Aff.launchAff_ do
-      let commandArgs = Array.drop 1 arguments
-      editUrl <-
-        Maybe.maybe
-          (liftEffect (Exception.throw "no edit url"))
-          pure
-          (Array.index commandArgs 0)
-      Client.destroy editUrl client
-      Console.log "deleted"
+    "index" -> Aff.launchAff_ (CommandIndex.command client commandArgs)
+    "show" -> Aff.launchAff_ (CommandShow.command client commandArgs)
+    "destroy" -> Aff.launchAff_ (CommandDestroy.command client commandArgs)
     _ -> -- TODO
       Console.log command
