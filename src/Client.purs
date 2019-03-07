@@ -1,6 +1,7 @@
 module Client
   ( Client
   , Entry
+  , destroy
   , list
   , newClient
   , show
@@ -23,7 +24,7 @@ foreign import newClient ::
   } -> Effect Client
 foreign import create ::
   forall r. { | r } -> Client -> Effect (Promise Response)
-foreign import delete :: String -> Client -> Effect (Promise Response)
+foreign import delete :: String -> Client -> Effect (Promise Unit)
 foreign import edit ::
   forall r. String -> { | r } -> Client -> Effect (Promise Response)
 foreign import listImpl :: Client -> Effect (Promise (Array Entry))
@@ -44,6 +45,9 @@ type Entry =
   , title :: String
   , updated :: String
   }
+
+destroy :: String -> Client -> Aff Unit
+destroy editUrl client = Promise.toAffE (delete editUrl client)
 
 list :: Client -> Aff (Array Entry)
 list = Promise.toAffE <<< listImpl

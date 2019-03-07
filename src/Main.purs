@@ -67,5 +67,14 @@ main = do
           (Array.index commandArgs 0)
       response <- Client.show editUrl client
       Console.log (formatEntry response)
+    "destroy" -> Aff.launchAff_ do
+      let commandArgs = Array.drop 1 arguments
+      editUrl <-
+        Maybe.maybe
+          (liftEffect (Exception.throw "no edit url"))
+          pure
+          (Array.index commandArgs 0)
+      Client.destroy editUrl client
+      Console.log "deleted"
     _ -> -- TODO
       Console.log command
