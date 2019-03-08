@@ -6,19 +6,13 @@ import Prelude
 
 import Client (Client)
 import Client as Client
-import Data.Array as Array
-import Data.Maybe as Maybe
 import Effect.Aff (Aff)
 import Effect.Class (liftEffect)
 import Effect.Class.Console as Console
 import Effect.Exception as Exception
 
 command :: Client -> Array String -> Aff Unit
-command client args = do
-  editUrl <-
-    Maybe.maybe
-      (liftEffect (Exception.throw "no edit url"))
-      pure
-      (Array.index args 0)
+command client [editUrl] = do
   Client.destroy editUrl client
   Console.log "deleted"
+command _ _ = liftEffect (Exception.throw "no edit url")

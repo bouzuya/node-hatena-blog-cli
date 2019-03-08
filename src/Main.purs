@@ -7,6 +7,7 @@ import Prelude
 import Bouzuya.CommandLineOption as CommandLineOption
 import Client (Entry)
 import Client as Client
+import Command.Create as CommandCreate
 import Command.Destroy as CommandDestroy
 import Command.Index as CommandIndex
 import Command.Show as CommandShow
@@ -50,7 +51,8 @@ main = do
     Either.either
       (const (Exception.throw "invalid option"))
       pure
-      (CommandLineOption.parse {} args) -- TODO: global options
+      -- TODO: global options
+      (CommandLineOption.parseWithOptions { greedyArguments: true } {} args)
   command <-
     Maybe.maybe
       (Exception.throw "no command")
@@ -59,6 +61,7 @@ main = do
   let commandArgs = Array.drop 1 arguments
   case command of
     "index" -> Aff.launchAff_ (CommandIndex.command client commandArgs)
+    "create" -> Aff.launchAff_ (CommandCreate.command client commandArgs)
     "show" -> Aff.launchAff_ (CommandShow.command client commandArgs)
     "destroy" -> Aff.launchAff_ (CommandDestroy.command client commandArgs)
     _ -> -- TODO

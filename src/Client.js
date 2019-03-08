@@ -4,7 +4,7 @@ exports.newClient = function (params) {
   };
 };
 
-exports.create = function (params) {
+exports.createImpl = function (params) {
   return function (client) {
     return function () {
       return client.create(params);

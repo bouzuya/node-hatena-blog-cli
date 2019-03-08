@@ -1,6 +1,7 @@
 module Client
   ( Client
   , Entry
+  , create
   , destroy
   , list
   , newClient
@@ -22,8 +23,17 @@ foreign import newClient ::
   , blogId :: String
   , hatenaId :: String
   } -> Effect Client
-foreign import create ::
-  forall r. { | r } -> Client -> Effect (Promise Response)
+foreign import createImpl ::
+  { content :: String
+  -- 'text/html' | 'text/x-hatena-syntax' | 'text/x-markdown'
+  , contentType :: String
+  , draft :: Boolean
+  , title :: String
+  -- updated?: string;
+  -- categories?: string[];
+  }
+  -> Client
+  -> Effect (Promise Entry)
 foreign import delete :: String -> Client -> Effect (Promise Unit)
 foreign import edit ::
   forall r. String -> { | r } -> Client -> Effect (Promise Response)
@@ -45,6 +55,17 @@ type Entry =
   , title :: String
   , updated :: String
   }
+
+create ::
+  { content :: String
+  -- 'text/html' | 'text/x-hatena-syntax' | 'text/x-markdown'
+  , contentType :: String
+  , draft :: Boolean
+  , title :: String
+  -- updated?: string;
+  -- categories?: string[];
+  } -> Client -> Aff Entry
+create params client = Promise.toAffE (createImpl params client)
 
 destroy :: String -> Client -> Aff Unit
 destroy editUrl client = Promise.toAffE (delete editUrl client)
