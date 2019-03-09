@@ -37,15 +37,16 @@ npm install
 
 ## Badges
 
-## Badges
+[![npm version][npm-badge-url]][npm-url]
+[![Travis CI][travisci-badge-url]][travisci-url]
+[![Dependencies status][david-dm-badge-url]][david-dm-url]
 
-[![Build Status][travis-badge]][travis]
-[![Dependencies status][david-dm-badge]][david-dm]
-
-[travis]: https://travis-ci.org/bouzuya/node-hatena-blog-cli
-[travis-badge]: https://travis-ci.org/bouzuya/node-hatena-blog-cli.svg?branch=master
-[david-dm]: https://david-dm.org/bouzuya/node-hatena-blog-cli
-[david-dm-badge]: https://david-dm.org/bouzuya/node-hatena-blog-cli.png
+[david-dm-badge-url]: https://img.shields.io/david/bouzuya/node-hatena-blog-cli.svg
+[david-dm-url]: https://david-dm.org/bouzuya/node-hatena-blog-cli
+[npm-badge-url]: https://img.shields.io/npm/v/hatena-blog-cli.svg
+[npm-url]: https://www.npmjs.com/package/hatena-blog-cli
+[travisci-badge-url]: https://img.shields.io/travis/bouzuya/node-hatena-blog-cli.svg
+[travisci-url]: https://travis-ci.org/bouzuya/node-hatena-blog-cli
 
 ## Author
 
