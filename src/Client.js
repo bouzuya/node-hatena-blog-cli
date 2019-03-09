@@ -20,7 +20,7 @@ exports.delete = function (memberUrl) {
   };
 };
 
-exports.edit = function (memberUrl) {
+exports.editImpl = function (memberUrl) {
   return function (params) {
     return function (client) {
       return function () {

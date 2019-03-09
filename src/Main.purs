@@ -11,6 +11,7 @@ import Command.Create as CommandCreate
 import Command.Destroy as CommandDestroy
 import Command.Index as CommandIndex
 import Command.Show as CommandShow
+import Command.Update as CommandUpdate
 import Data.Array as Array
 import Data.Either as Either
 import Data.Maybe (Maybe)
@@ -63,6 +64,6 @@ main = do
     "index" -> Aff.launchAff_ (CommandIndex.command client commandArgs)
     "create" -> Aff.launchAff_ (CommandCreate.command client commandArgs)
     "show" -> Aff.launchAff_ (CommandShow.command client commandArgs)
+    "update" -> Aff.launchAff_ (CommandUpdate.command client commandArgs)
     "destroy" -> Aff.launchAff_ (CommandDestroy.command client commandArgs)
-    _ -> -- TODO
-      Console.log command
+    _ -> Console.log "unknown command"

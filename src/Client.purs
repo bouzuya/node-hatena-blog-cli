@@ -6,6 +6,7 @@ module Client
   , list
   , newClient
   , show
+  , update
   ) where
 
 import Prelude
@@ -15,15 +16,7 @@ import Control.Promise as Promise
 import Effect (Effect)
 import Effect.Aff (Aff)
 
-foreign import data Client :: Type
-foreign import data Response :: Type
-foreign import newClient ::
-  { apiKey :: String
-  , authType :: String -- basic or wsse
-  , blogId :: String
-  , hatenaId :: String
-  } -> Effect Client
-foreign import createImpl ::
+type EntryParams =
   { content :: String
   -- 'text/html' | 'text/x-hatena-syntax' | 'text/x-markdown'
   , contentType :: String
@@ -32,11 +25,17 @@ foreign import createImpl ::
   -- updated?: string;
   -- categories?: string[];
   }
-  -> Client
-  -> Effect (Promise Entry)
+foreign import data Client :: Type
+foreign import newClient ::
+  { apiKey :: String
+  , authType :: String -- basic or wsse
+  , blogId :: String
+  , hatenaId :: String
+  } -> Effect Client
+foreign import createImpl :: EntryParams -> Client -> Effect (Promise Entry)
 foreign import delete :: String -> Client -> Effect (Promise Unit)
-foreign import edit ::
-  forall r. String -> { | r } -> Client -> Effect (Promise Response)
+foreign import editImpl ::
+  String -> EntryParams -> Client -> Effect (Promise Entry)
 foreign import listImpl :: Client -> Effect (Promise (Array Entry))
 foreign import retrieve :: String -> Client -> Effect (Promise Entry)
 
@@ -56,15 +55,7 @@ type Entry =
   , updated :: String
   }
 
-create ::
-  { content :: String
-  -- 'text/html' | 'text/x-hatena-syntax' | 'text/x-markdown'
-  , contentType :: String
-  , draft :: Boolean
-  , title :: String
-  -- updated?: string;
-  -- categories?: string[];
-  } -> Client -> Aff Entry
+create :: EntryParams -> Client -> Aff Entry
 create params client = Promise.toAffE (createImpl params client)
 
 destroy :: String -> Client -> Aff Unit
@@ -75,3 +66,6 @@ list = Promise.toAffE <<< listImpl
 
 show :: String -> Client -> Aff Entry
 show editUrl client = Promise.toAffE (retrieve editUrl client)
+
+update :: String -> EntryParams -> Client -> Aff Entry
+update editUrl params client = Promise.toAffE (editImpl editUrl params client)
