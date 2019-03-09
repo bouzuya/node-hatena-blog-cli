@@ -7,13 +7,10 @@ import Prelude
 import Bouzuya.CommandLineOption as CommandLineOption
 import Client (Entry)
 import Client as Client
-import Command.Create as CommandCreate
-import Command.Destroy as CommandDestroy
-import Command.Index as CommandIndex
-import Command.Show as CommandShow
-import Command.Update as CommandUpdate
+import Command as Command
 import Data.Array as Array
 import Data.Either as Either
+import Data.Enum as Enum
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Maybe
 import Effect (Effect)
@@ -46,23 +43,23 @@ help :: String
 help =
   Array.intercalate
     "\n"
-    [ "Usage: hatena-blog [options] <command>"
-    , ""
-    , "Commands:"
-    , "  create  create an entry"
-    , "  destroy destroy an entry"
-    , "  index   list entries"
-    , "  show    show an entry"
-    , "  update  update an entry"
-    , ""
-    , "Configs:"
-    , "  HATENA_API_KEY your hatena api key. e.g. xxxxxxxxxx"
-    , "  HATENA_BLOG_ID your hatena blog id. e.g. bouzuya.hatenablog.com"
-    , "  HATENA_ID      your hatena id.      e.g. bouzuya"
-    , ""
-    , "Options:"
-    , "  -h, --help show help"
-    ]
+    ( [ "Usage: hatena-blog [options] <command>"
+      , ""
+      , "Commands:"
+      ] <> (
+        map
+          (\c -> "  " <> Command.name c <> " " <> Command.description c)
+          (Enum.enumFromTo bottom top)
+      ) <>
+      [ ""
+      , "Configs:"
+      , "  HATENA_API_KEY your hatena api key. e.g. xxxxxxxxxx"
+      , "  HATENA_BLOG_ID your hatena blog id. e.g. bouzuya.hatenablog.com"
+      , "  HATENA_ID      your hatena id.      e.g. bouzuya"
+      , ""
+      , "Options:"
+      , "  -h, --help show help"
+      ])
 
 main :: Effect Unit
 main = do
@@ -80,17 +77,11 @@ main = do
     else do
       command <-
         Maybe.maybe
-          (Exception.throw "no command")
+          (Exception.throw "invalid command")
           pure
-          (Array.index arguments 0)
+          ((Array.index arguments 0) >>= Command.fromString)
       let commandArgs = Array.drop 1 arguments
       configMaybe <- loadConfig
       config <- Maybe.maybe (Exception.throw "invalid config") pure configMaybe
       client <- Client.newClient (Record.merge config { authType: "wsse" })
-      case command of
-        "create" -> Aff.launchAff_ (CommandCreate.command client commandArgs)
-        "destroy" -> Aff.launchAff_ (CommandDestroy.command client commandArgs)
-        "index" -> Aff.launchAff_ (CommandIndex.command client commandArgs)
-        "show" -> Aff.launchAff_ (CommandShow.command client commandArgs)
-        "update" -> Aff.launchAff_ (CommandUpdate.command client commandArgs)
-        _ -> Exception.throw "unknown command"
+      Aff.launchAff_ (Command.exec command client commandArgs)
