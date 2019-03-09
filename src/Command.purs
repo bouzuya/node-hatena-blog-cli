@@ -46,6 +46,9 @@ instance eqCommand :: Eq Command where
 instance ordCommand :: Ord Command where
   compare = comparing Enum.fromEnum
 
+instance showCommand :: Show Command where
+  show (Command n _ _) = "(Command " <> n <> ")"
+
 commands :: Array Command
 commands =
   Array.sortWith
