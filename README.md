@@ -21,8 +21,9 @@ $ export HATENA_API_KEY='api key'
 
 $ # create an entry
 $ hatena-blog create --title 'special bouzuya entry' bouzuya.md
+edit url: https://blog.hatena.ne.jp/bouzuya/bouzuya.hatenablog.com/atom/entry/17680117126990461664
 title: special bouzuya entry
-url: http://bouzuya.hatenablog.com/entry/2014/08/31/202340
+url: https://bouzuya.hatenablog.com/entry/2019/03/09/160527
 ```
 
 ## How to build
