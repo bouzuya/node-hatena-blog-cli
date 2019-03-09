@@ -16,4 +16,5 @@ command client _ = do
   Console.log (Foldable.intercalate "\n" (map formatEntry response))
 
 formatEntry :: Entry -> String
-formatEntry { published, title } = published <> " " <> title
+formatEntry { editUrl, published, title } =
+  published <> " " <> title <> " " <> editUrl

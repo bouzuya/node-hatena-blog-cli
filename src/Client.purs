@@ -16,15 +16,6 @@ import Control.Promise as Promise
 import Effect (Effect)
 import Effect.Aff (Aff)
 
-type EntryParams =
-  { content :: String
-  -- 'text/html' | 'text/x-hatena-syntax' | 'text/x-markdown'
-  , contentType :: String
-  , draft :: Boolean
-  , title :: String
-  -- updated?: string;
-  -- categories?: string[];
-  }
 foreign import data Client :: Type
 foreign import newClient ::
   { apiKey :: String
@@ -53,6 +44,16 @@ type Entry =
   , summary :: String
   , title :: String
   , updated :: String
+  }
+
+type EntryParams =
+  { content :: String
+  -- 'text/html' | 'text/x-hatena-syntax' | 'text/x-markdown'
+  , contentType :: String
+  , draft :: Boolean
+  , title :: String
+  -- updated?: string;
+  -- categories?: string[];
   }
 
 create :: EntryParams -> Client -> Aff Entry

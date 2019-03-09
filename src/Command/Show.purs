@@ -18,4 +18,7 @@ command client [editUrl] = do
 command _ _ = liftEffect (Exception.throw "no edit url")
 
 formatEntry :: Entry -> String
-formatEntry { published, title } = published <> " " <> title
+formatEntry { editUrl, htmlUrl, title } =
+  "edit url: " <> editUrl <> "\n" <>
+  "title: " <> title <> "\n" <>
+  "url: " <> htmlUrl
