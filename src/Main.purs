@@ -5,7 +5,6 @@ module Main
 import Prelude
 
 import Bouzuya.CommandLineOption as CommandLineOption
-import Client (Entry)
 import Client as Client
 import Command as Command
 import Data.Array as Array
@@ -35,9 +34,6 @@ loadConfig = do
     blogId <- Object.lookup "HATENA_BLOG_ID" env
     hatenaId <- Object.lookup "HATENA_ID" env
     pure { apiKey, blogId, hatenaId }
-
-formatEntry :: Entry -> String
-formatEntry { published, title } = published <> " " <> title
 
 help :: String
 help =
