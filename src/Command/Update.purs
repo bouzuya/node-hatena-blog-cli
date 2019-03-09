@@ -44,7 +44,7 @@ command client args = do
       (Array.index arguments 0)
   content <- FS.readTextFile Encoding.UTF8 file
   response <-
-    Client.update
+    Client.edit
       editUrl
       (Record.merge options { content, contentType: "text/x-markdown" })
       client

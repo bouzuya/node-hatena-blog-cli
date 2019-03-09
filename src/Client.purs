@@ -2,11 +2,11 @@ module Client
   ( Client
   , Entry
   , create
-  , destroy
+  , delete
+  , edit
   , list
   , newClient
-  , show
-  , update
+  , retrieve
   ) where
 
 import Prelude
@@ -33,11 +33,11 @@ foreign import newClient ::
   , hatenaId :: String
   } -> Effect Client
 foreign import createImpl :: EntryParams -> Client -> Effect (Promise Entry)
-foreign import delete :: String -> Client -> Effect (Promise Unit)
+foreign import deleteImpl :: String -> Client -> Effect (Promise Unit)
 foreign import editImpl ::
   String -> EntryParams -> Client -> Effect (Promise Entry)
 foreign import listImpl :: Client -> Effect (Promise (Array Entry))
-foreign import retrieve :: String -> Client -> Effect (Promise Entry)
+foreign import retrieveImpl :: String -> Client -> Effect (Promise Entry)
 
 type Entry =
   { authorName :: String
@@ -58,14 +58,14 @@ type Entry =
 create :: EntryParams -> Client -> Aff Entry
 create params client = Promise.toAffE (createImpl params client)
 
-destroy :: String -> Client -> Aff Unit
-destroy editUrl client = Promise.toAffE (delete editUrl client)
+delete :: String -> Client -> Aff Unit
+delete editUrl client = Promise.toAffE (deleteImpl editUrl client)
+
+edit :: String -> EntryParams -> Client -> Aff Entry
+edit editUrl params client = Promise.toAffE (editImpl editUrl params client)
 
 list :: Client -> Aff (Array Entry)
 list = Promise.toAffE <<< listImpl
 
-show :: String -> Client -> Aff Entry
-show editUrl client = Promise.toAffE (retrieve editUrl client)
-
-update :: String -> EntryParams -> Client -> Aff Entry
-update editUrl params client = Promise.toAffE (editImpl editUrl params client)
+retrieve :: String -> Client -> Aff Entry
+retrieve editUrl client = Promise.toAffE (retrieveImpl editUrl client)

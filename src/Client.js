@@ -12,7 +12,7 @@ exports.createImpl = function (params) {
   };
 };
 
-exports.delete = function (memberUrl) {
+exports.deleteImpl = function (memberUrl) {
   return function (client) {
     return function () {
       return client.delete(memberUrl);
@@ -36,7 +36,7 @@ exports.listImpl = function (client) {
   };
 };
 
-exports.retrieve = function (memberUrl) {
+exports.retrieveImpl = function (memberUrl) {
   return function (client) {
     return function () {
       return client.retrieve(memberUrl);

@@ -13,6 +13,6 @@ import Effect.Exception as Exception
 
 command :: Client -> Array String -> Aff Unit
 command client [editUrl] = do
-  Client.destroy editUrl client
+  Client.delete editUrl client
   Console.log "deleted"
 command _ _ = liftEffect (Exception.throw "no edit url")

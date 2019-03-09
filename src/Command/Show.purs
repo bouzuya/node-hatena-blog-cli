@@ -13,7 +13,7 @@ import Effect.Exception as Exception
 
 command :: Client -> Array String -> Aff Unit
 command client [editUrl] = do
-  response <- Client.show editUrl client
+  response <- Client.retrieve editUrl client
   Console.log (formatEntry response)
 command _ _ = liftEffect (Exception.throw "no edit url")
 
