@@ -15,7 +15,7 @@ $ # show usage
 $ hatena-blog --help
 
 $ # configure
-$ export HATENA_USERNAME='username'
+$ export HATENA_ID='username'
 $ export HATENA_BLOG_ID='blog id'
 $ export HATENA_API_KEY='api key'
 
